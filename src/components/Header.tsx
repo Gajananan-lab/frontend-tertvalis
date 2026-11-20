@@ -6,6 +6,7 @@ import { NAV_ITEMS } from '../data/tertvalisData';
 interface HeaderProps {
   activeSection: string;
   onNavigate: (href: string) => void;
+  isProductPage?: boolean;
 }
 
 /**
@@ -18,7 +19,7 @@ interface HeaderProps {
  * - Right-aligned clean brand blue button [REQUEST DEMO]
  * - Fully responsive with matching frosted white mobile drawer
  */
-export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => {
+export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate, isProductPage = false }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
@@ -117,8 +118,9 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
                 return (
                   <a
                     key={item.id}
-                    href={item.href}
+                    href={isProductPage ? `/${item.href}` : item.href}
                     onClick={(e) => {
+                      if (isProductPage) return;
                       e.preventDefault();
                       handleNavClick(item.href);
                     }}
@@ -169,11 +171,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
           <div className="flex items-center gap-4">
             {/* Button: [ REQUEST DEMO ] */}
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('#contact');
-              }}
+              href="/product"
               className="hidden sm:inline-flex items-center justify-center bg-[#050FD8] hover:bg-[#076CF2] text-white font-heading font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xs transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md hover:shadow-blue-600/20 active:scale-95"
             >
               TertFin
@@ -218,8 +216,9 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
                   return (
                     <a
                       key={item.id}
-                      href={item.href}
+                      href={isProductPage ? `/${item.href}` : item.href}
                       onClick={(e) => {
+                        if (isProductPage) return;
                         e.preventDefault();
                         e.stopPropagation();
                         handleNavClick(item.href);
@@ -242,12 +241,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
 
               <div className="mt-5 pt-4 border-t border-slate-100">
                 <a
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleNavClick('#contact');
-                  }}
+                  href="/product"
                   className="w-full inline-flex items-center justify-center bg-[#050FD8] hover:bg-[#076CF2] text-white font-heading font-bold text-xs uppercase tracking-widest py-3 rounded-xs transition-colors shadow-xs cursor-pointer active:scale-95"
                 >
                   TertFin

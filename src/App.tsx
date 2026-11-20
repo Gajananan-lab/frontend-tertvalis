@@ -15,6 +15,7 @@ import { Testimonials } from './sections/Testimonials';
 import { FAQ } from './sections/FAQ';
 import { Team } from './sections/Team';
 import { Contact } from './sections/Contact';
+import { TertFinProductPage } from './pages/TertFinProductPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsConditionsPage } from './pages/TermsConditionsPage';
 import { NAV_ITEMS, ScenarioId } from './data/tertvalisData';
@@ -40,7 +41,9 @@ export function App() {
   const [selectedDemoScenario, setSelectedDemoScenario] = useState<ScenarioId>('base');
   const [preselectedInquiry, setPreselectedInquiry] = useState<string>('');
   const [activeLegalModal, setActiveLegalModal] = useState<LegalDocType>(null);
-  const [currentPage, setCurrentPage] = useState<'main' | 'privacy' | 'terms'>('main');
+  const [currentPage, setCurrentPage] = useState<'main' | 'privacy' | 'terms' | 'product'>(
+    window.location.pathname.replace(/\/+$/, '') === '/product' ? 'product' : 'main'
+  );
 
   // Handle URL hash changes for routing (e.g. #privacy-policy, #terms-conditions)
   useEffect(() => {
@@ -247,6 +250,10 @@ export function App() {
     return (
       <PrivacyPolicyPage
         onBackToHome={() => {
+          if (window.location.pathname.replace(/\/+$/, '') === '/product') {
+            window.location.href = '/';
+            return;
+          }
           window.location.hash = '#home';
           setCurrentPage('main');
         }}
@@ -270,6 +277,10 @@ export function App() {
     return (
       <TermsConditionsPage
         onBackToHome={() => {
+          if (window.location.pathname.replace(/\/+$/, '') === '/product') {
+            window.location.href = '/';
+            return;
+          }
           window.location.hash = '#home';
           setCurrentPage('main');
         }}
@@ -286,6 +297,31 @@ export function App() {
           setCurrentPage('privacy');
         }}
       />
+    );
+  }
+
+  if (currentPage === 'product') {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#FAFAFA] text-[#0D0D0D]">
+        <Header activeSection="" onNavigate={(href) => { window.location.href = `/${href}`; }} isProductPage />
+        <main id="main-content" className="flex-1">
+          <TertFinProductPage />
+        </main>
+        <Footer
+          onNavigate={(href) => { window.location.href = `/${href}`; }}
+          onOpenLegalModal={(doc) => setActiveLegalModal(doc)}
+          onOpenPrivacyPage={() => { window.location.hash = '#privacy-policy'; setCurrentPage('privacy'); }}
+          onOpenTermsPage={() => { window.location.hash = '#terms-conditions'; setCurrentPage('terms'); }}
+        />
+        <LegalModal
+          activeDoc={activeLegalModal}
+          onClose={() => setActiveLegalModal(null)}
+          onContactClick={() => { window.location.href = '/#contact'; }}
+          onViewFullPrivacy={() => { window.location.hash = '#privacy-policy'; setCurrentPage('privacy'); }}
+          onViewFullTerms={() => { window.location.hash = '#terms-conditions'; setCurrentPage('terms'); }}
+        />
+        <CookieBanner onOpenPrivacy={() => { window.location.hash = '#privacy-policy'; setCurrentPage('privacy'); }} />
+      </div>
     );
   }
 

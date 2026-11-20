@@ -107,11 +107,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               className="w-full lg:w-auto"
             >
               <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate('#contact');
-                }}
+                href="/product"
                 className="w-full lg:w-auto lg:min-w-[190px] xl:min-w-[210px] inline-flex items-center justify-center bg-white hover:bg-slate-100 text-[#0D0D0D] font-heading font-bold text-xs sm:text-[13px] uppercase tracking-widest px-6 lg:px-8 xl:px-10 py-3.5 rounded-xs shadow-lg shadow-black/35 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
               >
                 TertFin
@@ -123,4 +119,3 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     </section>
   );
 };
-
